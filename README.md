@@ -1,7 +1,7 @@
 paulrentschler.tsmbackup
 ========================
 
-[![MIT licensed][mit-badge]]
+[![MIT licensed][mit-badge]][mit-link]
 
 Installs and configures the IBM Spectrum Protect (formally Tivoli Storage Manager) backup client on Ubuntu Linux
 
@@ -30,7 +30,6 @@ Specify the directories to be backed up.
 Use the following to backup all files on the host.
 
 ```yaml
----
 tsmbackup_backup_dirs:
   - all-local
 ```
@@ -39,7 +38,6 @@ tsmbackup_backup_dirs:
 Specify the files/directories to exclude.
 
 ```yaml
----
 tsmbackup_exclusion_files:
   - "/etc/shadow"
 tsmbackup_exclusion_dirs:
@@ -121,7 +119,7 @@ Basic example that specifies the minimal values required.
 License
 -------
 
-MIT
+[MIT][mit-link]
 
 
 Author Information
@@ -130,3 +128,4 @@ Author Information
 Created by Paul Rentschler in 2021.
 
 [mit-badge]: https://img.shields.io/badge/license-MIT-blue.svg?style=for-the-badge
+[mit-link]: https://raw.githubusercontent.com/paulrentschler/ansible-role-tsmbackup/develop/LICENSE
