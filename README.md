@@ -128,4 +128,4 @@ Author Information
 Created by Paul Rentschler in 2021.
 
 [mit-badge]: https://img.shields.io/badge/license-MIT-blue.svg?style=for-the-badge
-[mit-link]: https://raw.githubusercontent.com/paulrentschler/ansible-role-tsmbackup/develop/LICENSE
+[mit-link]: https://github.com/paulrentschler/ansible-role-tsmbackup/blob/master/LICENSE
