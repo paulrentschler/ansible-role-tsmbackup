@@ -1,0 +1,39 @@
+---
+# Debian-specific tasks for installing TSM
+
+
+# - name: debian | extract the tarball
+#   shell: "/bin/tar -zxvf {{ tsm_install_file }} creates=/usr/local/src/tivoli/*.deb chdir=/usr/local/src/tivoli"
+#   become: yes
+
+- name: debian | get the filenames for all of the DEB packages
+  ansible.builtin.command: find /usr/local/src/tivoli -type f -name "*.deb"
+  register: _tsmbackup_deb_filenames
+  become: yes
+
+- name: debian | install the DEB packages
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+  loop: _tsmbackup_deb_filenames.stdout_lines
+  become: yes
+
+- name: debian | create the dynamic linker run-time bindings for TSM
+  ansible.builtin.template:
+    src: tivoli.conf.j2
+    dest: /etc/ld.so.conf.d/tivoli.conf
+    mode: 0660
+  register: _tsmbackup_dl_bindings_result
+  become: yes
+
+- name: debian | update the dynamic linker run-time bindings
+  ansible.builtin.command: ldconfig
+  become: yes
+  when: _tsmbackup_dl_bindings_result.changed
+
+- name: debian | create the language symlink
+  ansible.builtin.file:
+    src: /opt/tivoli/tsm/client/lang/EN_US
+    dest: /opt/tivoli/tsm/client/ba/bin/EN_US
+    state: link
+  become: yes

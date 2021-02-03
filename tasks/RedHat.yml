@@ -1,0 +1,55 @@
+---
+# RedHat-specific tasks for installing TSM
+
+
+# - name: redhat | extract the tarball
+#   shell: "/bin/tar -xvf {{ tsm_install_file }} creates=/usr/local/src/tivoli/README_enu.htm chdir=/usr/local/src/tivoli"
+#   become: yes
+
+- name: redhat | get the GSK Crypt filename
+  ansible.builtin.command: find /usr/local/src/tivoli -type f -name "gskcrypt*.rpm"
+  register: _tsmbackup_gsk_crypt_filename
+  become: yes
+
+- name: redhat | install GSK Crypt
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+  loop: _tsmbackup_gsk_crypt_filename.stdout_lines
+  become: yes
+
+- name: redhat | get the GSK SSL filename
+  ansible.builtin.command: find /usr/local/src/tivoli -type f -name "gskssl*.rpm"
+  register: _tsmbackup_gsk_ssl_filename
+  become: yes
+
+- name: redhat | install GSK SSL
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+  loop: _tsmbackup_gsk_ssl_filename.stdout_lines
+  become: yes
+
+- name: redhat | get the TSM API filename
+  ansible.builtin.command: find /usr/local/src/tivoli -type f -name "TIVsm-API64*.rpm"
+  register: _tsmbackup_tsm_api_filename
+  become: yes
+
+- name: redhat | install TSM API
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+  loop: _tsmbackup_tsm_api_filename.stdout_lines
+  become: yes
+
+- name: redhat | get the TSM BA filename
+  ansible.builtin.command: find /usr/local/src/tivoli -type f -name "TIVsm-BA.*.rpm"
+  register: _tsmbackup_tsm_ba_filename
+  become: yes
+
+- name: redhat | install TSM BA
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+  loop: _tsmbackup_tsm_ba_filename.stdout_lines
+  become: yes

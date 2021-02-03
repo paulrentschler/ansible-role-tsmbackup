@@ -1,2 +1,72 @@
 ---
-# defaults file for tsmbackup
+# defaults for IBM Spectrum Protect (TSM) related variables
+
+
+# the url to download the client tarball from IBM
+tsmbackup_client_url: ""
+
+
+##
+# Specify the directories to be backed up
+##
+tsmbackup_backup_dirs: []
+
+# The following will backup all files on the server:
+#tsmbackup_backup_dirs:
+#  - all-local
+
+
+##
+# Specify the files/directories to exclude
+##
+tsmbackup_exclusion_files:
+  - "/etc/shadow"
+tsmbackup_exclusion_dirs:
+  - "/proc"
+
+
+
+##
+# Scheduling settings
+##
+tsmbackup_run_hour: 6
+tsmbackup_run_min: 0
+tsmbackup_run_month: "*"
+tsmbackup_run_day: "*"
+tsmbackup_run_days: "*"
+
+
+
+##
+# Configuration settings (for dsm.opt, dsm.sys, and tsm.exclude.list)
+##
+
+# FQDN of the client to identify it to the server
+tsmbackup_nodename: "{{ inventory_hostname }}"
+
+# Username of the user accessing the server on behalf of the client
+tsmbackup_user: "{{ devops_user|default(ansible_user) }}"
+
+# Specify a server name
+tsmbackup_server: ""
+tsmbackup_server_comm_method: TCPip
+tsmbackup_server_port: 1500
+
+# Specify whether to continue compressing files even if their size
+# increases through the use of compression. (TSM defaults to Yes)
+tsmbackup_compress_always: "No"
+
+# Specifies if symlinks are followed and the target is backed up (Yes)
+# or if just the symbolic link is backed up (No).
+#  ** Valid with the "archive" command ONLY!
+tsmbackup_archive_symlink_as_file: "No"
+
+# Specifies if symlinks are followed during incremental backups and if
+# files should be restored to the target of the symlink. (TSM defaults to No)
+#  ** Valid with the "incremental", "restore", and "retrieve" commands.
+tsmbackup_follow_symlinks: "Yes"
+
+# The log files for the scheduler and errors
+tsmbackup_scheduler_log: "/var/log/dsmsched.log"
+tsmbackup_error_log: "/var/log/dsmerror.log"
+

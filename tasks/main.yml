@@ -1,2 +1,103 @@
 ---
-# tasks file for tsmbackup
+# Install and configure the IBM Spectrum Protect (TSM) backup client
+
+
+- name: include distribution specific variables
+  include_vars: "{{ ansible_os_family }}.yml"
+
+
+##
+# Install the TSM backup client
+##
+
+- name: create the src directory
+  ansible.builtin.file:
+    path: "/usr/local/src"
+    owner: root
+    group: adm
+    mode: 0775
+    state: directory
+  become: yes
+
+- name: create the tivoli directory
+  ansible.builtin.file:
+    path: "/usr/local/src/tivoli"
+    owner: root
+    group: adm
+    mode: 0775
+    state: directory
+  become: yes
+
+- name: extract the tarball
+  ansible.builtin.unarchive:
+    src: "{{ tsmbackup_client_url }}"
+    dest: "/usr/local/src/tivoli"
+    remote_src: yes
+    creates: "/usr/local/src/tivoli/README_enu.htm"
+    owner: root
+    group: adm
+  become: yes
+
+- name: install TSM
+  include_tasks: "{{ ansible_os_family }}.yml"
+
+
+
+##
+# Configure the TSM backup client
+##
+
+- name: check if TSM installed
+  stat:
+    path: /opt/tivoli/tsm/client/ba/bin
+  register: _tsmbackup_tsm_exists
+  become: yes
+  tags:
+    - tsm_config
+
+- block:
+  - name: TSM system configuration
+    template:
+      src: dsm.sys.j2
+      dest: /opt/tivoli/tsm/client/ba/bin/dsm.sys
+      owner: "{{ devops_user|default(ansible_ssh_user) }}"
+      group: adm
+      mode: 0660
+
+  - name: TSM client configuration
+    template:
+      src: dsm.opt.j2
+      dest: /opt/tivoli/tsm/client/ba/bin/dsm.opt
+      owner: "{{ devops_user|default(ansible_ssh_user) }}"
+      group: adm
+      mode: 0660
+
+  - name: TSM include/exclude file list
+    template:
+      src: tsm.exclude.j2
+      dest: /opt/tivoli/tsm/client/ba/bin/tsm.exclude.list
+      owner: "{{ devops_user|default(ansible_ssh_user) }}"
+      group: adm
+      mode: 0660
+  when: _tsmbackup_tsm_exists.stat.isdir is defined and _tsmbackup_tsm_exists.stat.isdir
+  become: yes
+  tags:
+    - tsm_config
+
+
+
+##
+# Schedule the TSM backups
+##
+- name: schedule backups
+  template:
+    src: tsm.cron
+    dest: /etc/cron.d/tsm-backups
+    owner: root
+    group: root
+    mode: 0644
+  become: yes
+  when: _tsmbackup_tsm_exists.stat.isdir is defined and _tsmbackup_tsm_exists.stat.isdir
+  tags:
+    - tsm_config
+
