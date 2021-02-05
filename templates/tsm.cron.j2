@@ -7,7 +7,13 @@
 #   installed at: /opt/tivoli
 #
 
-MAILTO=root
+MAILTO={{ tsmbackup_run_mailto }}
+
+{% set min = tsmbackup_run_min %}
+{% set hr = tsmbackup_run_hour %}
+{% set day = tsmbackup_run_day %}
+{% set mon = tsmbackup_run_month %}
+{% set days = tsmbackup_run_days %}
 
 # Example of job definition:
 # .----------------- minute (0 - 59)
@@ -18,5 +24,5 @@ MAILTO=root
 # |   |  |  |  |
 # *   *  *  *  *  username    command to be executed
 
-### Schedule incremental TSM backups
-{{ tsmbackup_run_hour }}  {{ tsmbackup_run_min }}  {{ tsmbackup_run_month }}  {{ tsmbackup_run_day }}  {{ tsmbackup_run_days }}  root        /opt/tivoli/tsm/client/ba/bin/dsmc incremental
+ {{min}}  {{hr}}  {{day}}  {{mon}}  {{days}}  root        /opt/tivoli/tsm/client/ba/bin/dsmc incremental
+

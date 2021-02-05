@@ -91,7 +91,7 @@
 ##
 - name: schedule backups
   template:
-    src: tsm.cron
+    src: tsm.cron.j2
     dest: /etc/cron.d/tsm-backups
     owner: root
     group: root
