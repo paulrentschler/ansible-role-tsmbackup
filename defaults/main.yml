@@ -45,7 +45,7 @@ tsmbackup_run_days: "*"
 ##
 
 # FQDN of the client to identify it to the server
-tsmbackup_nodename: "{{ inventory_hostname }}"
+tsmbackup_nodename: "{{ ansible_fqdn }}"
 
 # Username of the user accessing the server on behalf of the client
 tsmbackup_user: "{{ devops_user|default(ansible_user) }}"
