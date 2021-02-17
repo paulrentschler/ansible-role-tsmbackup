@@ -21,6 +21,7 @@
   loop: "{{ _tsmbackup_deb_filenames.files | sort(attribute='path') }}"
   loop_control:
     label: "{{ item.path }}"
+  when: "'gsk' in item.path or 'api64' in item.path or 'ba.' in item.path"
   become: yes
 
 - name: debian | create the dynamic linker run-time bindings for TSM
