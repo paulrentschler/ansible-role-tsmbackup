@@ -31,6 +31,7 @@ SErvername  {{ tsmbackup_server }}
    COMMMethod         {{ tsmbackup_server_comm_method }}
    TCPPort            {{ tsmbackup_server_port }}
    TCPServeraddress   {{ tsmbackup_server }}
+   {% if tsmbackup_ssl|bool %}SSL                yes{% endif %}
 
 
 * Identify this machine to the TSM backup server

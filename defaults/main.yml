@@ -55,6 +55,15 @@ tsmbackup_server: ""
 tsmbackup_server_comm_method: TCPip
 tsmbackup_server_port: 1500
 
+# Enable SSL communication
+tsmbackup_ssl: no
+# the name of the CA certificate being installed
+tsmbackup_ssl_server: ""
+# the file containing the CA certificate
+tsmbackup_ssl_file: ""
+# the url to download the CA certificate from
+tsmbackup_ssl_url: ""
+
 # Specify whether to continue compressing files even if their size
 # increases through the use of compression. (TSM defaults to Yes)
 tsmbackup_compress_always: "No"

@@ -85,6 +85,27 @@
     - tsm_config
 
 
+- name: "Install SSL CA certificate"
+  block:
+    - name: Fetch the SSL CA certificate
+      ansible.builtin.get_url:
+        url: "{{ tsmbackup_ssl_url }}"
+        dest: "/opt/tivoli/tsm/client/ba/bin/{{ tsmbackup_ssl_file }}"
+        owner: root
+        group: root
+        mode: 0400
+    - name: Install the SSL CA certificate
+      ansible.builtin.command:
+        argv:
+          - dsmcert
+          - "-add"
+          - "-server"
+          - "{{ tsmbackup_ssl_server }}"
+          - "-file"
+          - "/opt/tivoli/tsm/client/ba/bin/{{ tsmbackup_ssl_file }}"
+  when: "tsmbackup_ssl_url != ''"
+  become: yes
+
 
 ##
 # Schedule the TSM backups

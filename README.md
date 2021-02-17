@@ -77,6 +77,25 @@ Specify the TSM backup server and how to connect to it.
     tsmbackup_server_port: 1500
 
 
+Enable SSL communication with the TSM backup server.
+
+    tsmbackup_ssl: no
+
+In addition to turning on the use of SSL, if a CA certificate needs to be installed for the TSM backup server's SSL certificate, specify the following values.
+
+```yaml
+# the name of the CA certificate being installed
+tsmbackup_ssl_server: ""
+# the file containing the CA certificate
+tsmbackup_ssl_file: ""
+# the url to download the CA certificate from
+tsmbackup_ssl_url: ""
+
+# example of how these values are used
+# wget {{ tsmbackup_ssl_url }}
+# sudo dsmcert -add -server {{ tsmbackup_ssl_server }} -file {{ tsmbackup_ssl_file }}
+```
+
 Specify whether to continue compressing files even if their size increases through the use of compression. (TSM defaults to Yes)
 
     tsmbackup_compress_always: "No"
