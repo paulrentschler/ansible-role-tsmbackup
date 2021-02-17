@@ -15,7 +15,7 @@
   become: yes
 
 - name: debian | install the DEB packages
-  ansible.builtin.package:
+  ansible.builtin.apt:
     deb: "{{ item.path }}"
     state: present
   loop: "{{ _tsmbackup_deb_filenames.files | sort(attribute='path') }}"
