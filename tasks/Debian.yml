@@ -35,11 +35,4 @@
 - name: debian | update the dynamic linker run-time bindings
   ansible.builtin.command: ldconfig
   become: yes
-  when: _tsmbackup_dl_bindings_result.changed
-
-- name: debian | create the language symlink
-  ansible.builtin.file:
-    src: /opt/tivoli/tsm/client/lang/EN_US
-    dest: /opt/tivoli/tsm/client/ba/bin/EN_US
-    state: link
-  become: yes
+  when: _tsmbackup_dl_bindings_result is changed

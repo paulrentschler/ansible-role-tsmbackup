@@ -33,7 +33,7 @@
     src: "{{ tsmbackup_client_url }}"
     dest: "/usr/local/src/tivoli"
     remote_src: yes
-    creates: "/usr/local/src/tivoli/README_enu.htm"
+    creates: "/usr/local/src/tivoli/README.htm"
     owner: root
     group: adm
   become: yes
