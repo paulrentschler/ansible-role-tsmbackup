@@ -7,15 +7,20 @@
 #   become: yes
 
 - name: debian | get the filenames for all of the DEB packages
-  ansible.builtin.command: find /usr/local/src/tivoli -type f -name "*.deb"
+  ansible.builtin.find:
+    paths: /usr/local/src/tivoli
+    patterns: "*.deb"
+    file_type: file
   register: _tsmbackup_deb_filenames
   become: yes
 
 - name: debian | install the DEB packages
   ansible.builtin.package:
-    name: "{{ item }}"
+    deb: "{{ item.path }}"
     state: present
-  loop: _tsmbackup_deb_filenames.stdout_lines
+  loop: "{{ _tsmbackup_deb_filenames.files | sort(attribute='path') }}"
+  loop_control:
+    label: "{{ item.path }}"
   become: yes
 
 - name: debian | create the dynamic linker run-time bindings for TSM
