@@ -14,6 +14,11 @@ MAILTO={{ tsmbackup_run_mailto }}
 {% set day = tsmbackup_run_day %}
 {% set mon = tsmbackup_run_month %}
 {% set days = tsmbackup_run_days %}
+{% if tsmbackup_run_enable|default('yes')|bool %}
+{% set enable = "" %}
+{% else %}
+{% set enable = "#" %}
+{% endif %}
 
 # Example of job definition:
 # .----------------- minute (0 - 59)
@@ -24,5 +29,5 @@ MAILTO={{ tsmbackup_run_mailto }}
 # |   |  |  |  |
 # *   *  *  *  *  username    command to be executed
 
- {{min}}  {{hr}}  {{day}}  {{mon}}  {{days}}  root        /opt/tivoli/tsm/client/ba/bin/dsmc incremental
+{{ enable }} {{min}}  {{hr}}  {{day}}  {{mon}}  {{days}}  root        /opt/tivoli/tsm/client/ba/bin/dsmc incremental
 
