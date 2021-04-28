@@ -59,6 +59,9 @@ Customize when that backup runs. The default is every day at 6am.
     tsmbackup_run_day: "*"
     tsmbackup_run_days: "*"
 
+Optionally disable the cron job (i.e., comment it out) by setting this to "no". The default is "yes".
+
+    tsmbackup_run_enable: yes
 
 Fully qualified domain name (FQDN) of the client (host where this is being installed) to identify it to the server.
 

@@ -32,6 +32,7 @@ tsmbackup_exclusion_dirs:
 # These are the values used to schedule the backup with Cron
 ##
 tsmbackup_run_mailto: "root"
+tsmbackup_run_enable: yes
 tsmbackup_run_hour: 6
 tsmbackup_run_min: 0
 tsmbackup_run_month: "*"
