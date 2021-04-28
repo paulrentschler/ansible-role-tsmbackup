@@ -121,4 +121,6 @@
   when: _tsmbackup_tsm_exists.stat.isdir is defined and _tsmbackup_tsm_exists.stat.isdir
   tags:
     - tsm_config
+    - tsm_cron
+    - cron
 
