@@ -54,6 +54,8 @@
   become: yes
   tags:
     - tsm_config
+    - tsm_cron
+    - cron
 
 - block:
   - name: TSM system configuration
