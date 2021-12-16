@@ -26,11 +26,11 @@
 
 - name: debian | uninstall the supporting DEB packages
   ansible.builtin.apt:
-    name: "{{ item.path|replace('/usr/local/src/tivoli', '')|split('_').0 }}"
+    name: "{{ item.path.split('_')[0]|replace('/usr/local/src/tivoli', '') }}"
     state: absent
   loop: "{{ _tsmbackup_deb_filenames.files | sort(attribute='path') }}"
   loop_control:
-    label: "{{ item.path|replace('/usr/local/src/tivoli', '')|split('_').0 }}"
+    label: "{{ item.path.split('_')[0]|replace('/usr/local/src/tivoli', '') }}"
   when: "'gsk' in item.path"
   become: yes
   tags:
