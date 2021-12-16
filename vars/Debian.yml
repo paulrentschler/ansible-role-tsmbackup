@@ -2,5 +2,5 @@
 # Debian distribution specific variables for IBM Spectrum Protect (TSM)
 
 # the url to download the client tarball from IBM
-tsmbackup_client_url: "https://public.dhe.ibm.com/storage/tivoli-storage-management/maintenance/client/v8r1/Linux/LinuxX86_DEB/BA/v8111/8.1.11.0-TIV-TSMBAC-LinuxX86_DEB.tar"
+tsmbackup_client_url: "https://public.dhe.ibm.com/storage/tivoli-storage-management/maintenance/client/v8r1/Linux/LinuxX86_DEB/BA/v8113/8.1.13.0-TIV-TSMBAC-LinuxX86_DEB.tar"
 
