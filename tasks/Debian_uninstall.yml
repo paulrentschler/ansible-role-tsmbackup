@@ -4,7 +4,7 @@
 
 - name: debian | get the filenames for all of the DEB packages
   ansible.builtin.find:
-    paths: /usr/local/src/tivoli
+    paths: "/usr/local/src/tivoli"
     patterns: "*.deb"
     file_type: file
   register: _tsmbackup_deb_filenames
@@ -14,11 +14,11 @@
 
 - name: debian | uninstall the DEB packages
   ansible.builtin.apt:
-    deb: "{{ item.path|replace('.amd64.deb', '') }}"
+    name: "{{ item.path|replace('/usr/local/src/tivoli', '')|replace('.amd64.deb', '') }}"
     state: absent
   loop: "{{ _tsmbackup_deb_filenames.files | sort(attribute='path') }}"
   loop_control:
-    label: "{{ item.path|replace('.amd64.deb', '') }}"
+    label: "{{ item.path|replace('/usr/local/src/tivoli', '')|replace('.amd64.deb', '') }}"
   when: "'api64' in item.path or 'ba.' in item.path"
   become: yes
   tags:
@@ -26,11 +26,11 @@
 
 - name: debian | uninstall the supporting DEB packages
   ansible.builtin.apt:
-    deb: "{{ item.path|split('_').0 }}"
+    name: "{{ item.path|replace('/usr/local/src/tivoli', '')|split('_').0 }}"
     state: absent
   loop: "{{ _tsmbackup_deb_filenames.files | sort(attribute='path') }}"
   loop_control:
-    label: "{{ item.path|split('_').0 }}"
+    label: "{{ item.path|replace('/usr/local/src/tivoli', '')|split('_').0 }}"
   when: "'gsk' in item.path"
   become: yes
   tags:
