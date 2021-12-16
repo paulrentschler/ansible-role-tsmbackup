@@ -21,10 +21,10 @@
   tags:
     - tsm_upgrade
 
-- name: uninstall TSM
-  include_tasks: "{{ ansible_os_family }}_uninstall.yml"
-  tags:
-    - tsm_upgrade
+# - name: uninstall TSM
+#   include_tasks: "{{ ansible_os_family }}_uninstall.yml"
+#   tags:
+#     - tsm_upgrade
 
 - name: remove existing download
   ansible.builtin.file:
