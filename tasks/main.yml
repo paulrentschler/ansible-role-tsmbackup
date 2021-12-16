@@ -13,9 +13,26 @@
 # Remove existing install
 ##
 
+- name: check for existing download
+  ansible.builtin.stat:
+    path: "/usr/local/src/tivoli"
+  register: _tsmbackup_existing_download
+  become: yes
+  tags:
+    -tsm_upgrade
+
+- name: remove existing download
+  ansible.builtin.file:
+    path: "/usr/local/src/tivoli"
+    state: absent
+  become: yes
+  when: _tsmbackup_existing_download.stat.isdir is defined and _tsmbackup_existing_download.stat.isdir
+  tags:
+    - tsm_upgrade
+
 - name: check for existing installation
   ansible.builtin.stat:
-    path: /opt/tivoli/tsm/client/ba/bin
+    path: "/opt/tivoli"
   register: _tsmbackup_existing_install
   become: yes
   tags:
@@ -26,6 +43,7 @@
     path: "/opt/tivoli"
     state: absent
   become: yes
+  when: _tsmbackup_existing_install.stat.isdir is defined and _tsmbackup_existing_install.stat.isdir
   tags:
     - tsm_upgrade
 
