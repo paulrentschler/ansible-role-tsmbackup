@@ -4,6 +4,9 @@
 
 - name: include distribution specific variables
   include_vars: "{{ ansible_os_family }}.yml"
+  tags:
+    - tsm_install
+    - tsm_upgrade
 
 
 ##
@@ -18,6 +21,9 @@
     mode: 0775
     state: directory
   become: yes
+  tags:
+    - tsm_install
+    - tsm_upgrade
 
 - name: create the tivoli directory
   ansible.builtin.file:
@@ -27,6 +33,9 @@
     mode: 0775
     state: directory
   become: yes
+  tags:
+    - tsm_install
+    - tsm_upgrade
 
 - name: extract the tarball
   ansible.builtin.unarchive:
@@ -37,9 +46,15 @@
     owner: root
     group: adm
   become: yes
+  tags:
+    - tsm_install
+    - tsm_upgrade
 
 - name: install TSM
   include_tasks: "{{ ansible_os_family }}.yml"
+  tags:
+    - tsm_install
+    - tsm_upgrade
 
 
 
@@ -55,6 +70,8 @@
   tags:
     - tsm_config
     - tsm_cron
+    - tsm_install
+    - tsm_upgrade
     - cron
 
 - block:
@@ -85,6 +102,8 @@
   become: yes
   tags:
     - tsm_config
+    - tsm_install
+    - tsm_upgrade
 
 
 - name: "Install SSL CA certificate"
@@ -107,6 +126,9 @@
           - "/opt/tivoli/tsm/client/ba/bin/{{ tsmbackup_ssl_file }}"
   when: "tsmbackup_ssl_url != ''"
   become: yes
+  tags:
+    - tsm_install
+    - tsm_upgrade
 
 
 ##
@@ -124,5 +146,6 @@
   tags:
     - tsm_config
     - tsm_cron
+    - tsm_install
     - cron
 

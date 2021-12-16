@@ -13,6 +13,9 @@
     file_type: file
   register: _tsmbackup_deb_filenames
   become: yes
+  tags:
+    - tsm_install
+    - tsm_upgrade
 
 - name: debian | install the DEB packages
   ansible.builtin.apt:
@@ -23,6 +26,9 @@
     label: "{{ item.path }}"
   when: "'gsk' in item.path or 'api64' in item.path or 'ba.' in item.path"
   become: yes
+  tags:
+    - tsm_install
+    - tsm_upgrade
 
 - name: debian | create the dynamic linker run-time bindings for TSM
   ansible.builtin.template:
@@ -31,8 +37,14 @@
     mode: 0660
   register: _tsmbackup_dl_bindings_result
   become: yes
+  tags:
+    - tsm_install
+    - tsm_upgrade
 
 - name: debian | update the dynamic linker run-time bindings
   ansible.builtin.command: ldconfig
   become: yes
   when: _tsmbackup_dl_bindings_result is changed
+  tags:
+    - tsm_install
+    - tsm_upgrade
