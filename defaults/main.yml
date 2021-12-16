@@ -54,7 +54,7 @@ tsmbackup_user: "{{ devops_user|default(ansible_user) }}"
 # Specify a server name
 tsmbackup_server: ""
 tsmbackup_server_comm_method: TCPip
-tsmbackup_server_port: 1500
+tsmbackup_server_port: ""
 
 # Enable SSL communication
 tsmbackup_ssl: no

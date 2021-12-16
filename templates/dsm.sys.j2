@@ -29,9 +29,13 @@
 * TSM backup server and the connection parameters
 SErvername  {{ tsmbackup_server }}
    COMMMethod         {{ tsmbackup_server_comm_method }}
-   TCPPort            {{ tsmbackup_server_port }}
    TCPServeraddress   {{ tsmbackup_server }}
-   {% if tsmbackup_ssl|bool %}SSL                yes{% endif %}
+{% if tsmbackup_ssl|bool %}
+   TCPPort            {{ tsmbackup_server_port|default('1542') }}
+   SSL                yes
+{% else %}
+   TCPPort            {{ tsmbackup_server_port|default('1500') }}
+{% endif %}
 
 
 * Identify this machine to the TSM backup server
@@ -40,33 +44,54 @@ NODENAME {{ tsmbackup_nodename|default(ansible_fqdn) }}
 * Your user account
 USERS {{ tsmbackup_user|default(ansible_user) }}
 
-* The log files for the scheduler and errors
-SCHEDLOGNAME "{{ tsmbackup_scheduler_log }}"
-ERRORLOGNAME "{{ tsmbackup_error_log }}"
+* Generate a new password each time it expires and store it encrypted
+PASSWORDACCESS GENERATE
+
+* Specify the directory for passwords
+PASSWORDDIR /opt/tivoli/tsm/client/ba/bin/
+
+
+**
+* Logging
+**
+ERRORLOGName        "{{ tsmbackup_error_log }}"
+ERRORLOGRetention   30
+SCHEDLOGName        "{{ tsmbackup_scheduler_log }}"
+SCHEDLOGRetention   30
+
+
+**
+* Performance
+**
+* Remove the asterisk to specify the TCP window size
+*TCPWINDOWSIZE      1024
+
+* Remove the asterisk to specify the TCP buffer size
+*TCPBUFFSIZE        512
+
+* Compress files before sending them to the backup server
+*   (Default: No)
+COMPRESSION         YES
+
+DEDUPLication       YES
+
+
+**
+* Security options
+**
+AUTODEPLOY                NO
+CADLISTENONPort           NO
+MANAGEDServices           schedule
+SCHEDCMDDisabled          YES
+SCHEDRESTRETRDisabled     YES
+SRVPREPOSTSCHeddisabled   YES
+SRVPREPOSTSNApdisabled    YES
+SSLACCEPTCERTFROMSERV     NO
 
 
 * Specify the file that contains the directories/files to
 * include or exclude from the backup (optional)
 INCLEXCL /opt/tivoli/tsm/client/ba/bin/tsm.exclude.list
-
-* Remove the asterisk to specify the TCP window size
-*TCPWINDOWSIZE 1024
-
-* Remove the asterisk to specify the TCP buffer size
-*TCPBUFFSIZE 512
-
-* Compress files before sending them to the backup server
-*   (Default: No)
-COMPRESSION YES
-
-* Specify the directory for passwords
-PASSWORDDIR /opt/tivoli/tsm/client/ba/bin/
-
-* Generate a new password each time it expires and store it encrypted
-PASSWORDACCESS GENERATE
-
-* Specify the services that are managed
-MANAGEDServices schedule webclient
 
 * Define virtual mount points for specific directories to back up
 * This is useful if you do not want to backup the entire file system
@@ -75,3 +100,4 @@ MANAGEDServices schedule webclient
 VIRTUALMountpoint {{ _directory }}
 {% endif %}
 {% endfor %}
+
