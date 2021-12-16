@@ -14,12 +14,24 @@
 
 - name: debian | uninstall the DEB packages
   ansible.builtin.apt:
-    deb: "{{ item.path }}"
+    deb: "{{ item.path|replace('.amd64.deb', '') }}"
     state: absent
   loop: "{{ _tsmbackup_deb_filenames.files | sort(attribute='path') }}"
   loop_control:
-    label: "{{ item.path }}"
-  when: "'gsk' in item.path or 'api64' in item.path or 'ba.' in item.path"
+    label: "{{ item.path|replace('.amd64.deb', '') }}"
+  when: "'api64' in item.path or 'ba.' in item.path"
+  become: yes
+  tags:
+    - tsm_upgrade
+
+- name: debian | uninstall the supporting DEB packages
+  ansible.builtin.apt:
+    deb: "{{ item.path|split('_').0 }}"
+    state: absent
+  loop: "{{ _tsmbackup_deb_filenames.files | sort(attribute='path') }}"
+  loop_control:
+    label: "{{ item.path|split('_').0 }}"
+  when: "'gsk' in item.path"
   become: yes
   tags:
     - tsm_upgrade
