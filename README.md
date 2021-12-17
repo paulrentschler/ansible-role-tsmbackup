@@ -77,6 +77,10 @@ Specify the TSM backup server and how to connect to it.
 
     tsmbackup_server: ""
     tsmbackup_server_comm_method: TCPip
+
+
+Optionally specify the TSM backup server's port. The default ports of 1500 for optional SSL connections or 1542 for required SSL connections will be used if no port is specified.
+
     tsmbackup_server_port: 1500
 
 
